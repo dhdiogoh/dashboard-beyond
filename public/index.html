@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pedidos da loja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="pagina">
+    <header class="topo">
+      <div>
+        <p class="sobretitulo">Loja de acessórios</p>
+        <h1>Pedidos <em>em ordem</em></h1>
+      </div>
+      <div class="acoes">
+      <button type="button" class="botao botao-claro" id="abrirMensagem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>
+        Pedido por mensagem
+      </button>
+      <label class="botao">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M5 20h14"/></svg>
+        Importar planilha
+        <input type="file" id="arquivo" accept=".xlsx,.csv" hidden>
+      </label>
+      </div>
+    </header>
+
+    <section class="kpis">
+      <article class="kpi kpi-novo">
+        <p class="kpi-rotulo">Pendentes</p>
+        <p class="kpi-valor" id="pendentes">0</p>
+        <p class="kpi-nota">pedidos aguardando pagamento</p>
+      </article>
+      <article class="kpi kpi-receber">
+        <p class="kpi-rotulo">A receber</p>
+        <p class="kpi-valor" id="aReceber">R$ 0,00</p>
+        <p class="kpi-nota">soma dos pedidos novos</p>
+      </article>
+      <article class="kpi kpi-faturado">
+        <p class="kpi-rotulo">Faturado</p>
+        <p class="kpi-valor" id="faturado">R$ 0,00</p>
+        <p class="kpi-nota">pedidos pagos e enviados</p>
+      </article>
+    </section>
+
+    <section class="lista">
+      <div class="lista-topo">
+        <h2>Pedidos</h2>
+        <nav class="filtros" id="filtros" aria-label="Filtrar por status">
+          <button data-status="" class="ativo">Todos <span></span></button>
+          <button data-status="novo"><i class="ponto ponto-novo"></i>Novo <span></span></button>
+          <button data-status="pago"><i class="ponto ponto-pago"></i>Pago <span></span></button>
+          <button data-status="enviado"><i class="ponto ponto-enviado"></i>Enviado <span></span></button>
+          <button data-status="cancelado"><i class="ponto ponto-cancelado"></i>Cancelado <span></span></button>
+        </nav>
+      </div>
+
+      <div class="tabela-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Cliente</th>
+              <th>Produto</th>
+              <th class="num">Qtd</th>
+              <th class="num">Unitário</th>
+              <th class="num">Total</th>
+              <th>Pagamento</th>
+              <th>Status</th>
+              <th>Obs.</th>
+            </tr>
+          </thead>
+          <tbody id="pedidos"></tbody>
+        </table>
+        <div id="vazio" class="vazio" hidden>
+          <p class="vazio-titulo">Nenhum pedido por aqui</p>
+          <p>Importe a planilha (.xlsx ou .csv) para começar.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="dialogMensagem" class="dialogo">
+    <div class="dialogo-topo">
+      <h2>Pedido por mensagem</h2>
+      <button type="button" class="fechar" id="fecharMensagem" aria-label="Fechar">×</button>
+    </div>
+
+    <label class="campo">
+      <span>Mensagem do Direct ou WhatsApp</span>
+      <textarea id="mensagem" rows="4" placeholder="Oi! Aqui é a Carla, queria 2 choker veludo, pago no pix 😊"></textarea>
+    </label>
+    <button type="button" class="botao" id="extrair">Extrair com IA</button>
+
+    <form id="formPedido" class="revisao" hidden>
+      <p class="revisao-titulo">Revise antes de salvar</p>
+      <div class="grade">
+        <label class="campo"><span>Cliente</span><input name="cliente" required></label>
+        <label class="campo"><span>Produto</span><input name="produto" required></label>
+        <label class="campo"><span>Quantidade</span><input name="qtd" type="number" min="1" step="1" required></label>
+        <label class="campo"><span>Preço unitário (R$)</span><input name="preco" type="number" min="0" step="0.01" required></label>
+        <label class="campo campo-largo"><span>Pagamento</span><input name="formaPgto"></label>
+      </div>
+      <p class="dica">O preço vem do último pedido desse produto. O total é calculado pelo sistema ao salvar.</p>
+      <button type="submit" class="botao">Salvar pedido</button>
+    </form>
+  </dialog>
+
+  <div id="aviso" class="aviso" role="status" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
